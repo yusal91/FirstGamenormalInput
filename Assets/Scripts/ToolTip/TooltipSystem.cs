@@ -10,7 +10,7 @@ public class TooltipSystem : MonoBehaviour
     public Tooltip tooltip;
 
 
-    private void Awake()
+    void Awake()
     {
         instance = this;
     }

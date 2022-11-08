@@ -76,27 +76,4 @@ public class PlayerManager : MonoBehaviour
             Debug.Log("Dashing");
         }
     }
-
-    //public void WaterBall()
-    //{
-    //    if (context.action.triggered)
-    //    {
-    //        Instantiate(WaterBallPrefab, _CreationPoint.position, Quaternion.identity);
-
-    //        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());     // mousepotion new inputsystem
-    //        RaycastHit hit;
-    //        if (Physics.Raycast(ray, out hit) && context.action.triggered)
-    //        {
-    //            Debug.Log(ray);
-    //            if (waterBall != null)
-    //            {
-    //                waterBall.Throw(hit.point);
-    //                //ThrowWaterBall(hit.point);
-    //                Debug.Log(hit.point);
-    //            }
-    //        }
-    //    }
-    //}
-
-
 }
