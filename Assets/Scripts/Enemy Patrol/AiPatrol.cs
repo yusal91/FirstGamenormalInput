@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BattleMode
+{
+    None,
+    InBattle,
+    OutOfBattle,
+}
 
 public class AiPatrol : MonoBehaviour
 {
@@ -13,18 +19,18 @@ public class AiPatrol : MonoBehaviour
 
     [Header("Distance Check")]
     public float lookRadius = 10f;
-    public Transform target;
-    public float distanceToTarget = 8f;
-    public bool targetNotInRange = false;
+    public Transform target;   
 
     [Header("Enemy Attacking")]
     public bool alreadyAttacking = false;
     public float timeBetweenAttack = 1f;
 
-    private EnemySelection enemySelection;
+    public float attackRange = 2f;
+    public bool playerInSightRange, playerInAttackRange;
 
-    //public float sightRange, attackRange;
-    //public bool targetInSightRange, targetInAttackRange;   
+    public LayerMask whatIsPlayer;
+
+ 
 
 
     // Start is called before the first frame update
@@ -39,39 +45,52 @@ public class AiPatrol : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        playerInSightRange = Physics.CheckSphere(transform.position, lookRadius, whatIsPlayer);
+        playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
         float range = 1f;
         dist = Vector3.Distance(transform.position, wayPoints[wayPointIndex].position);
         if (dist < range)
         {
-            IncreaseIndex();
+            IncreaseIndex();            
         }
-        Patrol();
 
-        distanceToTarget = Vector3.Distance(transform.position, target.position);        
+        if (!playerInSightRange && !playerInAttackRange)
+        {
+            playerInSightRange = false;
+            playerInAttackRange = false;            
+        }
 
-        if (distanceToTarget <= lookRadius)
+
+        if (playerInSightRange && !playerInAttackRange)                                            // checking if player is with target radius
         {
-            targetNotInRange = true;
-            transform.LookAt(target);
-            transform.position += transform.forward * speed * Time.deltaTime;
-            FaceTarget();           
+            playerInSightRange = true;
+            playerInAttackRange = false;
+            ChasePlaye();
         }
-        else if(distanceToTarget >= lookRadius)
+
+        if (playerInAttackRange)
         {
-            targetNotInRange = false;            
-            transform.LookAt(wayPoints[wayPointIndex].position);
-        }
-        Patrol();
+            playerInAttackRange = true;
+            AttackTarget();
+        }        
+    }
+
+    void ChasePlaye()
+    {        
+        transform.LookAt(target);        
+        transform.position += target.position * attackRange * Time.deltaTime;
+        FaceTarget();
     }
 
     void Patrol()
-    {
+    {       
         transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     void AttackTarget()
     {
-
+        
     }
     void ResetAttack()
     {
@@ -90,8 +109,7 @@ public class AiPatrol : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, lookRadius);
+        Gizmos.color = Color.red;        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 
     void FaceTarget()

@@ -11,7 +11,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Sub Behaviours")]
     public PlayerMovementBehaviour playerMovementBehaviour;    
     //public PlayerAnimationBehaviour playerAnimationBehaviour;
-    //public PlayerVisualsBehaviour playerVisualsBehaviour;
+    
 
 
     [Header("Input Movement Settings")]    
@@ -19,12 +19,8 @@ public class PlayerManager : MonoBehaviour
     private Vector3 rawInputMovement;
     private Vector3 smoothInputMovement;
 
-    public float fallMultiplier;
+    public float fallMultiplier;     // ahmm will ask the teacher
     
-
-    //public WaterBall waterBall;
-    //[SerializeField] Transform _CreationPoint;
-    //[SerializeField] WaterBall WaterBallPrefab;
 
 
     public void SetupPlayer()             //(int newPlayerID)
