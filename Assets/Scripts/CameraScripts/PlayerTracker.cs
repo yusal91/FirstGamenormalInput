@@ -25,7 +25,7 @@ public class PlayerTracker : MonoBehaviour
     void Start()
     {
         ahead = new GameObject("ahead");
-        //_renderer = trackerTarget.gameObject.GetComponent<MeshRenderer>();
+        //_renderer = lookTarget.gameObject.GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame

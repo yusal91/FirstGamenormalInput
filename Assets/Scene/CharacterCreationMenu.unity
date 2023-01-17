@@ -545,7 +545,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306183006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.57, z: -5}
+  m_LocalPosition: {x: 0, y: 2, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -615,10 +615,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35d71d3c7a6400c48ad66c54484e2ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cam: {fileID: 1306183008}
   target: {fileID: 706252671}
   degrees: 10
   dragSpeed: 10
   speed: 500
+  disToTarget: 1
 --- !u!1 &1549563090
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovementBehaviour : MonoBehaviour
 {
@@ -15,12 +16,12 @@ public class PlayerMovementBehaviour : MonoBehaviour
     public float jumpForce = 5f;
     public float dashForce;
     public float dashDuration;
+    public float dashSpeed = 10;
     
 
     [Header("Ground Settings")]
     public Transform groundCheck;
     public LayerMask groundLayer;   
-
 
     [Header("Camera Settings")]   //Stored Values 
     public Camera mainCamera;
@@ -93,8 +94,15 @@ public class PlayerMovementBehaviour : MonoBehaviour
         playerRigidbody.velocity = Vector3.zero;
     }
 
+    public IEnumerator ContinuesDash()
+    {        
+        playerRigidbody.AddForce(transform.forward * dashSpeed , ForceMode.Impulse);
+        yield return new WaitForSeconds(dashDuration);
+        playerRigidbody.velocity = Vector3.zero;
+    }
+
     public bool onGround()
     {      
         return Physics.CheckSphere(groundCheck.position, 0.1f, groundLayer);        
-    }
+    }     
 }

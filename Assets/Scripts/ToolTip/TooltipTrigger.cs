@@ -5,8 +5,9 @@ using UnityEngine.EventSystems;
 
 public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler,IPointerDownHandler
 {
-    private float onPointerDelayEnter = 1f;
+    [Header("Name")]
     public string header;
+    [TextArea]
     public string content;  
 
 
@@ -14,34 +15,15 @@ public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {          
         TooltipSystem.Show(content, header);
         Debug.Log( "mouse over");
-        //StartCoroutine(DelayWhenHover());
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {        
-        TooltipSystem.Hide();
-        //StartCoroutine(DelayWhenExitHover());
+        TooltipSystem.Hide();       
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        //if(eventData.button == PointerEventData.InputButton.Left)
-        //{
-        //    Debug.Log("leftMousebuttonPressed");
-        //}        
+               
     }
-
-    //IEnumerator DelayWhenHover()
-    //{
-    //    yield return new WaitForSeconds(onPointerDelayEnter);
-    //    TooltipSystem.Show(content, header);
-    //}
-
-    //IEnumerator DelayWhenExitHover()
-    //{
-    //    yield return new WaitForSeconds(onPointerDelayEnter);
-    //    TooltipSystem.Hide();
-    //}
-
-
 }

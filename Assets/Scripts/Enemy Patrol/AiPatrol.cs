@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum BattleMode
@@ -11,6 +12,9 @@ public enum BattleMode
 
 public class AiPatrol : MonoBehaviour
 {
+    [Header("BattleMode")]
+    public BattleMode battleMode;
+
     [Header("Patrol Area Check")]
     public Transform[] wayPoints;
     public int speed;
@@ -30,12 +34,18 @@ public class AiPatrol : MonoBehaviour
 
     public LayerMask whatIsPlayer;
 
+    private Rigidbody aiRb;
+
  
 
 
     // Start is called before the first frame update
     void Start()
     {
+        battleMode = new BattleMode();
+
+        aiRb = GetComponent<Rigidbody>();   
+
         target = GameManager.instance.player.transform;
 
         wayPointIndex = 0;
@@ -48,38 +58,42 @@ public class AiPatrol : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(transform.position, lookRadius, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
+        //TestingBattleMode();
+       
+
         float range = 1f;
         dist = Vector3.Distance(transform.position, wayPoints[wayPointIndex].position);
         if (dist < range)
         {
-            IncreaseIndex();            
+            IncreaseIndex();           
         }
+        Patrol();
 
         if (!playerInSightRange && !playerInAttackRange)
         {
-            playerInSightRange = false;
-            playerInAttackRange = false;            
+          
         }
 
 
         if (playerInSightRange && !playerInAttackRange)                                            // checking if player is with target radius
         {
-            playerInSightRange = true;
-            playerInAttackRange = false;
+           
             ChasePlaye();
         }
 
         if (playerInAttackRange)
-        {
-            playerInAttackRange = true;
+        {           
             AttackTarget();
-        }        
+        }
     }
+
+    
+  
 
     void ChasePlaye()
     {        
-        transform.LookAt(target);        
-        transform.position += target.position * attackRange * Time.deltaTime;
+        transform.LookAt(target);
+        
         FaceTarget();
     }
 
@@ -100,16 +114,17 @@ public class AiPatrol : MonoBehaviour
     void IncreaseIndex()
     {
         wayPointIndex++;
-        if(wayPointIndex >= wayPoints.Length)
+        if (wayPointIndex >= wayPoints.Length)
         {
             wayPointIndex = 0;
         }
-        transform.LookAt(wayPoints[wayPointIndex].position);
+        transform.LookAt(wayPoints[wayPointIndex].position);        
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;        Gizmos.DrawWireSphere(transform.position, lookRadius);
+        Gizmos.color = Color.red;        
+        Gizmos.DrawWireSphere(transform.position, lookRadius);
     }
 
     void FaceTarget()

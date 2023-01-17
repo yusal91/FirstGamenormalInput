@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ToolTipWorldobject : MonoBehaviour
 {
+    [Header("Name and Description")]
     public string header;
+    [TextArea]
     public string content;
     
 

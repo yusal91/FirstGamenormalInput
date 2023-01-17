@@ -10,17 +10,14 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Sub Behaviours")]
     public PlayerMovementBehaviour playerMovementBehaviour;    
-    //public PlayerAnimationBehaviour playerAnimationBehaviour;
-    
-
+    //public PlayerAnimationBehaviour playerAnimationBehaviour;   
 
     [Header("Input Movement Settings")]    
     public float movementSmoothingSpeed = 1f;
     private Vector3 rawInputMovement;
     private Vector3 smoothInputMovement;
 
-    public float fallMultiplier;     // ahmm will ask the teacher
-    
+    public float staminaCostOnDash = 5;
 
 
     public void SetupPlayer()             //(int newPlayerID)
@@ -36,6 +33,7 @@ public class PlayerManager : MonoBehaviour
         UpdatePlayerMovement();        
         onJump();
         OnDash();
+        onDashing();
     }  
 
     void UpdatePlayerMovement()
@@ -48,15 +46,42 @@ public class PlayerManager : MonoBehaviour
         smoothInputMovement = Vector3.Lerp(smoothInputMovement, rawInputMovement, Time.deltaTime * movementSmoothingSpeed);
     }
 
-    public void OnMovement(Vector3 inputMovement)    
+    void OnMovement(Vector3 inputMovement)    
     {
         inputMovement.x = Input.GetAxis("Horizontal");        
         inputMovement.z = Input.GetAxis("Vertical");
         
         rawInputMovement = new Vector3(inputMovement.x, 0, inputMovement.z);
+        rawInputMovement = PlayerSlop();      // testing if dash can be used only on ground       
     }
 
-    public void onJump()
+    private Vector3 PlayerSlop()
+    {
+        RaycastHit groundcheckHit = new RaycastHit();
+        Vector3 calculatedPlayermovement = rawInputMovement;
+        if(playerMovementBehaviour.onGround())
+        {
+            Vector3 localGroundeCheckHitNormal = playerMovementBehaviour.playerRigidbody.transform.InverseTransformDirection
+                                                  (groundcheckHit.normal);
+            float groundSlopeAngel = Vector3.Angle(localGroundeCheckHitNormal, playerMovementBehaviour.playerRigidbody.transform.up);
+            if(!(groundSlopeAngel == 0f))
+            {
+                Quaternion slopeAngleRotation = Quaternion.FromToRotation(playerMovementBehaviour.playerRigidbody.transform.up, 
+                                                localGroundeCheckHitNormal);
+                calculatedPlayermovement = slopeAngleRotation * calculatedPlayermovement;
+            }
+#if UNITY_EDITOR
+            Debug.DrawRay(playerMovementBehaviour.playerRigidbody.position, 
+                          playerMovementBehaviour.playerRigidbody.transform.TransformDirection(calculatedPlayermovement), 
+                          Color.red, 0.5f);
+#endif
+        }
+
+        return calculatedPlayermovement;
+    }
+ 
+
+    void onJump()
     {
         if (Input.GetButtonDown("Jump"))
         {
@@ -64,9 +89,23 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    void onDashing()
+    {    
+        if(Input.GetMouseButton(1) && UiManager.instance.currentStamina >= staminaCostOnDash)
+        {
+            StartCoroutine(playerMovementBehaviour.ContinuesDash());
+            Debug.Log("Dashing");
+            UiManager.instance.UseStminaWhenDash(staminaCostOnDash);            
+        }
+        else 
+        {
+            StopCoroutine(playerMovementBehaviour.ContinuesDash());            
+        }
+    }
+
     public void OnDash()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             StartCoroutine(playerMovementBehaviour.Dash());
             Debug.Log("Dashing");
