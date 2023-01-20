@@ -16,9 +16,9 @@ public class GameManager : MonoBehaviour
     [Header("Enemy Settings")]
     public GameObject enemyHealthbar;   
     public GameObject generalTargetedHPBar;
-    [SerializeField] Slider enemyHPSlider;
-    [SerializeField] Slider generalHPSlider;
-    [SerializeField] int enemyCurrentHP, enemyMaxHP;   
+    [SerializeField] public Slider enemyHPSlider;
+    [SerializeField] public Slider generalHPSlider;
+    [SerializeField] public int enemyCurrentHP, enemyMaxHP;   
     public GameObject selectEnemy;
 
     [Header("Other Settings")]
@@ -64,12 +64,12 @@ public class GameManager : MonoBehaviour
         if(selectEnemy != null && twiceClickedTimer > 0)
         {
             twiceClickedTimer -= Time.deltaTime;
-            Debug.Log("Clicked Twice" + twiceClickedTimer);
+            //Debug.Log("Clicked Twice" + twiceClickedTimer);
         }
         else
         {
             haveClickedTwice= false;
-            Debug.Log("HaveClicked Twice" + haveClickedTwice);
+            //Debug.Log("HaveClicked Twice" + haveClickedTwice);
         }
 
     }
@@ -93,6 +93,7 @@ public class GameManager : MonoBehaviour
         {
             if(hit.transform.tag == "Enemy")
             {
+                Debug.Log(hit.transform.tag == "Enemy");
                 enemyHealthbar.SetActive(true);
                 generalTargetedHPBar.SetActive(true);
                 selectEnemy = hit.transform.gameObject;
@@ -122,27 +123,5 @@ public class GameManager : MonoBehaviour
         selectEnemy = null;
         enemyHealthbar.SetActive(false);
         generalTargetedHPBar.SetActive(false);
-    }
-
-    void DealDamage(int amount)
-    {
-        enemyCurrentHP -= amount;
-        enemyHPSlider.value = amount;
-        generalHPSlider.value = amount;
-        if(enemyCurrentHP <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        MageInputManager mageInput = GetComponent<MageInputManager>();        
-
-        if (collision.collider.tag == "Enemy" && mageInput != null)
-        {
-            mageInput.CastingFireboll();
-            DealDamage(10);
-        }
-    }
+    }       
 }

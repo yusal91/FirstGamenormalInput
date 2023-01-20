@@ -19,7 +19,7 @@ public class AiPatrol : MonoBehaviour
     public Transform[] wayPoints;
     public int speed;
     public int wayPointIndex;
-    public float dist;
+    public float distBetweenWayPoints;
 
     [Header("Distance Check")]
     public float lookRadius = 10f;
@@ -29,7 +29,7 @@ public class AiPatrol : MonoBehaviour
     public bool alreadyAttacking = false;
     public float timeBetweenAttack = 1f;
 
-    public float attackRange = 2f;
+    public float attackRange = 4f;
     public bool playerInSightRange, playerInAttackRange;
 
     public LayerMask whatIsPlayer;
@@ -58,48 +58,39 @@ public class AiPatrol : MonoBehaviour
         playerInSightRange = Physics.CheckSphere(transform.position, lookRadius, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        //TestingBattleMode();
-       
-
-        float range = 1f;
-        dist = Vector3.Distance(transform.position, wayPoints[wayPointIndex].position);
-        if (dist < range)
-        {
-            IncreaseIndex();           
-        }
-        Patrol();
+        //TestingBattleMode();      
 
         if (!playerInSightRange && !playerInAttackRange)
         {
-          
+            Patrol();
         }
-
 
         if (playerInSightRange && !playerInAttackRange)                                            // checking if player is with target radius
-        {
-           
-            ChasePlaye();
-        }
+        {           
+            ChasePlaye();            
+        }       
 
         if (playerInAttackRange)
         {           
             AttackTarget();
         }
-    }
-
-    
+    }   
   
 
     void ChasePlaye()
     {        
-        transform.LookAt(target);
-        
-        FaceTarget();
+        FaceTarget();           
     }
 
     void Patrol()
-    {       
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+    {
+        float range = 1f;              // range between each point.
+        distBetweenWayPoints = Vector3.Distance(transform.position, wayPoints[wayPointIndex].position);
+        if (distBetweenWayPoints < range)
+        {
+            EnemyPatrolPoints();
+        }        
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
 
     void AttackTarget()
@@ -111,9 +102,10 @@ public class AiPatrol : MonoBehaviour
         alreadyAttacking = false;
     }
 
-    void IncreaseIndex()
+    void EnemyPatrolPoints()
     {
         wayPointIndex++;
+
         if (wayPointIndex >= wayPoints.Length)
         {
             wayPointIndex = 0;

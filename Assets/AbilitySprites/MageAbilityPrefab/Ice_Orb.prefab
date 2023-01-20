@@ -14485,6 +14485,7 @@ GameObject:
   - component: {fileID: 4088018776544688516}
   - component: {fileID: 8948441155749632329}
   - component: {fileID: 1266758248730408797}
+  - component: {fileID: -1759551967019284879}
   m_Layer: 0
   m_Name: Ice_Orb
   m_TagString: Untagged
@@ -19337,6 +19338,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellSpeed: 0.5
+  fireSpell: {fileID: 11400000, guid: 29255946b3c5e3a4da94c86f7ebc3265, type: 2}
+  enemyLay:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!135 &-1759551967019284879
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7977983987542526064}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8529443982517608722
 GameObject:
   m_ObjectHideFlags: 0

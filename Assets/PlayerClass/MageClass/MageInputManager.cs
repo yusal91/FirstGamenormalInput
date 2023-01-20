@@ -76,25 +76,32 @@ public class MageInputManager : MonoBehaviour
         {  
             if (fireSpell.currentCooldown <= 0 && fireboll_GCD.fillAmount == 0)
             {                
-                Debug.Log("FireButton Pressed");
+                Debug.Log("FireButton Pressed" + fireSpell.currentCooldown);
+                Debug.Log("FireButton Pressed" + fireSpell.maxCooldown);
                 //FireSpell
                 
                 Instantiate(fireBollPrefab, castingPoint.position, Quaternion.LookRotation
-                           (GameManager.instance.selectEnemy.transform.position - castingPoint.position));
+                           (GameManager.instance.selectEnemy.transform.position - castingPoint.position));                
 
                 spellCount++;
                 
                 fireboll_GCD.fillAmount = 1f;
+                blizardGCD.fillAmount = 1;
+                thunderGCD.fillAmount = 1;
             }
         }
 
-        if(fireSpell.maxCooldown >= 1)
+        if(fireSpell.maxCooldown >= 1 && blizardSpell.maxCooldown >= 1 && thunderSpell.maxCooldown >= 1)
         {            
-            fireboll_GCD.fillAmount -= 1 / fireSpell.maxCooldown * Time.deltaTime;           
-            
-            if(fireboll_GCD.fillAmount <= 0)
+            fireboll_GCD.fillAmount -= 1 / fireSpell.maxCooldown * Time.deltaTime;
+            blizardGCD.fillAmount -= 1 / blizardSpell.maxCooldown * Time.deltaTime; 
+            thunderGCD.fillAmount -= 1 / thunderSpell.maxCooldown * Time.deltaTime; 
+
+            if (fireboll_GCD.fillAmount <= 0  && blizardGCD.fillAmount <= 0 && thunderGCD.fillAmount <= 0)
             {                
                 fireboll_GCD.fillAmount = 0;
+                blizardGCD.fillAmount = 0;
+                thunderGCD.fillAmount = 0;
             }
         }
         StartCoroutine(FireBlastReadyToUse());
@@ -108,30 +115,47 @@ public class MageInputManager : MonoBehaviour
             fireboll_GCD.fillAmount = 0;
             fireBlastIMG.gameObject.SetActive(true);
             
-            if (Input.GetKeyUp(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 spellCount = 0;
                 yield return new WaitForSeconds(fireboll_GCD.fillAmount = 1);
                 fireBlastIMG.gameObject.SetActive(false);
-            }
-                
-            fireboll_GCD.fillAmount = 1;
+            }  
             yield return new WaitForSeconds(0.75f);
         }
     }
 
-    void CastingIceSpell()
+    public  void CastingIceSpell()
     {   
-        if (Input.GetKeyUp(KeyCode.E) && GameManager.instance.selectEnemy != null)
+        if (Input.GetKeyUp(KeyCode.E) && GameManager.instance.selectEnemy != null && blizardSpell.currentCooldown <= 0 && blizardGCD.fillAmount == 0)
         {
             //Ice/BlizzardSpell
             Instantiate(iceBollPrefab, castingPoint.position, Quaternion.LookRotation
                        (GameManager.instance.selectEnemy.transform.position - castingPoint.position));    // will see if it works with out Qutarionen.Identity
             blizardSpellCount++;
+
+            fireboll_GCD.fillAmount = 1f;
+            blizardGCD.fillAmount = 1;
+            thunderGCD.fillAmount = 1;
+
             if (blizardSpellCount == 3)
             {
                 Debug.Log("IceStrom can be used");
                 blizardSpellCount = 0;
+            }
+
+            if (fireSpell.maxCooldown >= 1 && blizardSpell.maxCooldown >= 1 && thunderSpell.maxCooldown >= 1)
+            {
+                fireboll_GCD.fillAmount -= 1 / fireSpell.maxCooldown * Time.deltaTime;
+                blizardGCD.fillAmount -= 1 / blizardSpell.maxCooldown * Time.deltaTime;
+                thunderGCD.fillAmount -= 1 / thunderSpell.maxCooldown * Time.deltaTime;
+
+                if (fireboll_GCD.fillAmount <= 0 && blizardGCD.fillAmount <= 0 && thunderGCD.fillAmount <= 0)
+                {
+                    fireboll_GCD.fillAmount = 0;
+                    blizardGCD.fillAmount = 0;
+                    thunderGCD.fillAmount = 0;
+                }
             }
         }
     }

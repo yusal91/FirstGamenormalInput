@@ -13,7 +13,7 @@ public class ScriptableSpell : ScriptableObject
    
     [Header("Spell Stats")]
     public float mannaCost = 5f;   
-    public float damageAmount = 10f;
+    public int damageAmount;
     public float currentCooldown = 0;
     public float maxCooldown;
     public int damageOverTime = 15;

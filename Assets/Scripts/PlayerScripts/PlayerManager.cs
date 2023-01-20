@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Input Movement Settings")]    
     public float movementSmoothingSpeed = 1f;
-    private Vector3 rawInputMovement;
+    public Vector3 rawInputMovement;
     private Vector3 smoothInputMovement;
 
     public float staminaCostOnDash = 5;
@@ -92,7 +92,7 @@ public class PlayerManager : MonoBehaviour
     void onDashing()
     {    
         if(Input.GetMouseButton(1) && UiManager.instance.currentStamina >= staminaCostOnDash)
-        {
+        {            
             StartCoroutine(playerMovementBehaviour.ContinuesDash());
             Debug.Log("Dashing");
             UiManager.instance.UseStminaWhenDash(staminaCostOnDash);            

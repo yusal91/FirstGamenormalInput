@@ -4834,6 +4834,7 @@ GameObject:
   - component: {fileID: 4017448604815041327}
   - component: {fileID: 4017448604815041326}
   - component: {fileID: 2040194135070080745}
+  - component: {fileID: 7760267177749468841}
   m_Layer: 0
   m_Name: Fire_orb
   m_TagString: Untagged
@@ -9677,6 +9678,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spellSpeed: 0.5
+  fireSpell: {fileID: 11400000, guid: fcdb3f6c4073798448d2380b96ee4c4c, type: 2}
+  enemyLay:
+    serializedVersion: 2
+    m_Bits: 128
+--- !u!135 &7760267177749468841
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4017448604815041325}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4017448605611490044
 GameObject:
   m_ObjectHideFlags: 0
