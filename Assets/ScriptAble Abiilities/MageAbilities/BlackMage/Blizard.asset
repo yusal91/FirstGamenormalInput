@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Blizard
   m_EditorClassIdentifier: 
   spellName: Blizard
-  spellDescription: Does Ice Damage
+  spellDescription: Deals Ice Damage
   spellSprite: {fileID: 2800000, guid: 21c3bcad9cf8d1f4897da130a5e257f4, type: 3}
+  spellPrefab: {fileID: 7977983987542526064, guid: 736f2dd18d2850942ad6edf2fac4e6ef, type: 3}
   mannaCost: 5
   damageAmount: 10
   currentCooldown: 0

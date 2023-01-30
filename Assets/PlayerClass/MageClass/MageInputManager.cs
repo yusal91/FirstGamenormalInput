@@ -5,14 +5,14 @@ using UnityEngine.UI;
 
 public class MageInputManager : MonoBehaviour
 {
+    public static MageInputManager instance;
+
     [Header("Spell Counts and Damage OverTime")]
     public List<int> damgOverTime = new List<int>();
     [SerializeField] int spellCount = 0;
     [SerializeField] int blizardSpellCount = 0;
     [Header("Casting Position")]
-    [SerializeField] Transform castingPoint;
-    [SerializeField] GameObject fireBollPrefab;    
-    [SerializeField] GameObject iceBollPrefab;    
+    [SerializeField] Transform castingPoint;     
 
     [Header("Spell")]
     public ScriptableSpell fireSpell;
@@ -31,8 +31,11 @@ public class MageInputManager : MonoBehaviour
     [SerializeField] Image thunder2IMG;
     [SerializeField] Image laylineIMG;
     [SerializeField] Image laylineCooldownIMG;
-   
 
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -80,7 +83,7 @@ public class MageInputManager : MonoBehaviour
                 Debug.Log("FireButton Pressed" + fireSpell.maxCooldown);
                 //FireSpell
                 
-                Instantiate(fireBollPrefab, castingPoint.position, Quaternion.LookRotation
+                Instantiate(fireSpell.spellPrefab, castingPoint.position, Quaternion.LookRotation
                            (GameManager.instance.selectEnemy.transform.position - castingPoint.position));                
 
                 spellCount++;
@@ -91,25 +94,13 @@ public class MageInputManager : MonoBehaviour
             }
         }
 
-        if(fireSpell.maxCooldown >= 1 && blizardSpell.maxCooldown >= 1 && thunderSpell.maxCooldown >= 1)
-        {            
-            fireboll_GCD.fillAmount -= 1 / fireSpell.maxCooldown * Time.deltaTime;
-            blizardGCD.fillAmount -= 1 / blizardSpell.maxCooldown * Time.deltaTime; 
-            thunderGCD.fillAmount -= 1 / thunderSpell.maxCooldown * Time.deltaTime; 
-
-            if (fireboll_GCD.fillAmount <= 0  && blizardGCD.fillAmount <= 0 && thunderGCD.fillAmount <= 0)
-            {                
-                fireboll_GCD.fillAmount = 0;
-                blizardGCD.fillAmount = 0;
-                thunderGCD.fillAmount = 0;
-            }
-        }
+        OnCoolDown();
         StartCoroutine(FireBlastReadyToUse());
     }
 
     IEnumerator FireBlastReadyToUse()
     {
-        while (spellCount == 3)
+        if (spellCount == 3)
         {
             Debug.Log("FireBlast can be used");
             fireboll_GCD.fillAmount = 0;
@@ -118,6 +109,7 @@ public class MageInputManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 spellCount = 0;
+                OnCoolDown();
                 yield return new WaitForSeconds(fireboll_GCD.fillAmount = 1);
                 fireBlastIMG.gameObject.SetActive(false);
             }  
@@ -130,7 +122,7 @@ public class MageInputManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.E) && GameManager.instance.selectEnemy != null && blizardSpell.currentCooldown <= 0 && blizardGCD.fillAmount == 0)
         {
             //Ice/BlizzardSpell
-            Instantiate(iceBollPrefab, castingPoint.position, Quaternion.LookRotation
+            Instantiate(blizardSpell.spellPrefab, castingPoint.position, Quaternion.LookRotation
                        (GameManager.instance.selectEnemy.transform.position - castingPoint.position));    // will see if it works with out Qutarionen.Identity
             blizardSpellCount++;
 
@@ -144,19 +136,7 @@ public class MageInputManager : MonoBehaviour
                 blizardSpellCount = 0;
             }
 
-            if (fireSpell.maxCooldown >= 1 && blizardSpell.maxCooldown >= 1 && thunderSpell.maxCooldown >= 1)
-            {
-                fireboll_GCD.fillAmount -= 1 / fireSpell.maxCooldown * Time.deltaTime;
-                blizardGCD.fillAmount -= 1 / blizardSpell.maxCooldown * Time.deltaTime;
-                thunderGCD.fillAmount -= 1 / thunderSpell.maxCooldown * Time.deltaTime;
-
-                if (fireboll_GCD.fillAmount <= 0 && blizardGCD.fillAmount <= 0 && thunderGCD.fillAmount <= 0)
-                {
-                    fireboll_GCD.fillAmount = 0;
-                    blizardGCD.fillAmount = 0;
-                    thunderGCD.fillAmount = 0;
-                }
-            }
+            OnCoolDown();
         }
     }
 
@@ -189,4 +169,21 @@ public class MageInputManager : MonoBehaviour
             yield return new WaitForSeconds(0.75f);   // null isnt option for this need to check and do the look again;
         }
     }
+
+    void OnCoolDown()
+    {
+        if (fireSpell.maxCooldown >= 1 && blizardSpell.maxCooldown >= 1 && thunderSpell.maxCooldown >= 1)
+        {
+            fireboll_GCD.fillAmount -= 1 / fireSpell.maxCooldown * Time.deltaTime;
+            blizardGCD.fillAmount -= 1 / blizardSpell.maxCooldown * Time.deltaTime;
+            thunderGCD.fillAmount -= 1 / thunderSpell.maxCooldown * Time.deltaTime;
+
+            if (fireboll_GCD.fillAmount <= 0 && blizardGCD.fillAmount <= 0 && thunderGCD.fillAmount <= 0)
+            {
+                fireboll_GCD.fillAmount = 0;
+                blizardGCD.fillAmount = 0;
+                thunderGCD.fillAmount = 0;
+            }
+        }
+    }  
 }

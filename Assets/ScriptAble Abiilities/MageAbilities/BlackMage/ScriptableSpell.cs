@@ -7,10 +7,12 @@ public class ScriptableSpell : ScriptableObject
 {
     [Header("About This Spell")]
     public string spellName = "New Spell";
-    [TextArea]
+    [TextArea(10, 0)]
     public string spellDescription = "New Description";
     public Texture2D spellSprite;
-   
+    [Header("Spell Prefab")]
+    public GameObject spellPrefab;
+
     [Header("Spell Stats")]
     public float mannaCost = 5f;   
     public int damageAmount;

@@ -14487,7 +14487,7 @@ GameObject:
   - component: {fileID: 1266758248730408797}
   - component: {fileID: -1759551967019284879}
   m_Layer: 0
-  m_Name: Ice_Orb
+  m_Name: Blizard_Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

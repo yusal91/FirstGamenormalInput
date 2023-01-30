@@ -6,7 +6,7 @@ public class AddForceOnSpells : MonoBehaviour
 {
     private Rigidbody rb;
     [SerializeField]private float spellSpeed;
-    public ScriptableSpell spell;    
+     
     
 
     // Start is called before the first frame update
@@ -19,40 +19,29 @@ public class AddForceOnSpells : MonoBehaviour
     void Update()
     {
         rb.AddForce(transform.forward * spellSpeed, ForceMode.Impulse);
-        
     }
 
-    void DealDamage(int amount)
-    {    
-        GameManager.instance.enemyCurrentHP -= amount;
-        GameManager.instance.enemyHPSlider.value = amount;
-        GameManager.instance.generalHPSlider.value = amount;
-
-        Debug.Log(amount);
-
-        if (GameManager.instance.enemyCurrentHP <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter(Collider collider)
     {
-        MageInputManager mageInput = GetComponent<MageInputManager>();
-
-        if (collider.gameObject.tag == "Enemy" && GameManager.instance.selectEnemy != null)
+        if (collider.gameObject.tag == "Enemy")
         {
-            Debug.Log("Enemy Collider" + collider.gameObject.tag == "Enemy");
-
-            if (mageInput != null)
-            {
-                mageInput.CastingFireboll();
-                mageInput.CastingIceSpell();
-                DealDamage(10);
-                Debug.Log("spell collids");
-            }
             
+            Debug.Log("Enemy Collider, " + (collider.tag == "Enemy" && GameManager.instance.selectEnemy));
+
+            if(MageInputManager.instance.fireSpell.name == "FireBoll")
+            {
+                MageInputManager.instance.CastingFireboll();
+                GameManager.instance.DamageTheEnemy(MageInputManager.instance.fireSpell.damageAmount);
+                Debug.Log("spell collids," + MageInputManager.instance.fireSpell);
+            }
+            //if (MageInputManager.instance.blizardSpell.name == "Blizard")
+            //{
+            //     MageInputManager.instance.CastingIceSpell();
+            //     GameManager.instance.DamageTheEnemy(MageInputManager.instance.blizardSpell.damageAmount);
+            //     Debug.Log("spell collids," + MageInputManager.instance.blizardSpell);
+            //}
             Destroy(gameObject);
         }
     }
+
 }

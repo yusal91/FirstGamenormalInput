@@ -57,13 +57,14 @@ public class GamePlayCamera : MonoBehaviour
         cameraCenter.transform.position = new Vector3(position1.x, position1.y + yOffset, position1.z);
 
         // Rotation of CameraCenter, and thus the camera, depending on Mouse Input:
-        var rotation = cameraCenter.transform.rotation;
-        rotation = Quaternion.Euler(rotation.eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity / 2,
-                                    rotation.eulerAngles.y + Input.GetAxis("Mouse X") * sensitivity, 
-                                    rotation.eulerAngles.z);
-        cameraCenter.transform.rotation = rotation;
-
-
+        if(Input.GetMouseButton(0))
+        {
+            var rotation = cameraCenter.transform.rotation;
+            rotation = Quaternion.Euler(rotation.eulerAngles.x - Input.GetAxis("Mouse Y") * sensitivity / 2,
+                                        rotation.eulerAngles.y + Input.GetAxis("Mouse X") * sensitivity,
+                                        rotation.eulerAngles.z);
+            cameraCenter.transform.rotation = rotation;
+        }   
         // Zooming Input from our Mouse Scroll Wheel
         if (Input.GetAxis("Mouse ScrollWheel") != 0f)
         {
@@ -94,7 +95,7 @@ public class GamePlayCamera : MonoBehaviour
 		and a point directly behind the camera (to smooth things, that's why there's an "obj"
 		GameObject, that is directly behind cam)
 		*/
-        if (Physics.Linecast(cameraCenter.transform.position, obj.transform.position, out _camHit))
+        if (Physics.Linecast(transform.position, obj.transform.position, out _camHit))
         {
             //This gets executed if there's any collider in the way
             var transform1 = cam.transform;

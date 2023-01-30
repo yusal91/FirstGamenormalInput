@@ -94,7 +94,7 @@ public class PlayerManager : MonoBehaviour
         if(Input.GetMouseButton(1) && UiManager.instance.currentStamina >= staminaCostOnDash)
         {            
             StartCoroutine(playerMovementBehaviour.ContinuesDash());
-            Debug.Log("Dashing");
+            //Debug.Log("Dashing");
             UiManager.instance.UseStminaWhenDash(staminaCostOnDash);            
         }
         else 
