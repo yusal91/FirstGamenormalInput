@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class PlayerMovementBehaviour : MonoBehaviour
 {
     [Header("Component References")]
-    public Rigidbody playerRigidbody;
+    public Rigidbody playerRigidbody;    
 
     [Header("Movement Settings")]
     public float movementSpeed = 3f;
@@ -78,6 +78,7 @@ public class PlayerMovementBehaviour : MonoBehaviour
 
         return cameraForward * movementDirection.z + cameraRight * movementDirection.x;
     }
+    
 
     public void jump()    
     {   

@@ -11,17 +11,16 @@ public class Teleporting : MonoBehaviour
     public GameObject loadingDuringTeleporting;
 
 
-
-    public void TeleportButtonPressed()
+    public void TeleportButtonPressed(GameObject destination)
     {
-        StartCoroutine(DelayDuringTeleporting());
-    }
-
-    IEnumerator DelayDuringTeleporting()
-    {
-        float loadingTime = 1f;
         player.transform.position = destination.transform.position;
         loadingDuringTeleporting.SetActive(true);
+
+        StartCoroutine(DelayDuringTeleporting(1f));
+    }
+
+    IEnumerator DelayDuringTeleporting(float loadingTime)
+    {       
         yield return new WaitForSeconds(loadingTime);
         loadingDuringTeleporting.SetActive(false);
     }

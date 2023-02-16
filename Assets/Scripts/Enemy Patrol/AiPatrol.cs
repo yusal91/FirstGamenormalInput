@@ -3,18 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public enum BattleMode
-{
-    None,
-    InBattle,
-    OutOfBattle,
-}
 
 public class AiPatrol : MonoBehaviour
 {
-    [Header("BattleMode")]
-    public BattleMode battleMode;
-
     [Header("Patrol Area Check")]
     public Transform[] wayPoints;
     public int speed;
@@ -41,9 +32,7 @@ public class AiPatrol : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        battleMode = new BattleMode();
-
+    {   
         aiRb = GetComponent<Rigidbody>();   
 
         target = GameManager.instance.player.transform;

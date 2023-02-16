@@ -31,6 +31,7 @@ public class MageInputManager : MonoBehaviour
     [SerializeField] Image thunder2IMG;
     [SerializeField] Image laylineIMG;
     [SerializeField] Image laylineCooldownIMG;
+    
 
     private void Awake()
     {
