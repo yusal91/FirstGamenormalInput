@@ -26,13 +26,7 @@ public class AddForceOnSpells : MonoBehaviour
         rb.AddForce(transform.forward * spellSpeed, ForceMode.Impulse);
     }
 
-    //void DisplayDamageNumber()
-    //{
-    //    var damageText = Random.Range(0, damageNumber.Length);
-    //    var message = damageNumber;
-    //    var msgObject = Instantiate(popNumbertext, transform.position, Quaternion.identity);
-    //    msgObject.GetComponentInChildren<TMP_Text>().SetText(message);
-    //}
+  
 
     void OnTriggerEnter(Collider collider)
     {
@@ -47,12 +41,7 @@ public class AddForceOnSpells : MonoBehaviour
                 GameManager.instance.DamageTheEnemy(MageInputManager.instance.fireSpell.damageAmount);
                 Debug.Log("spell collids," + MageInputManager.instance.fireSpell);
             }
-            //if (MageInputManager.instance.blizardSpell.name == "Blizard")
-            //{
-            //     MageInputManager.instance.CastingIceSpell();
-            //     GameManager.instance.DamageTheEnemy(MageInputManager.instance.blizardSpell.damageAmount);
-            //     Debug.Log("spell collids," + MageInputManager.instance.blizardSpell);
-            //}
+            
             Destroy(gameObject);
         }
     }

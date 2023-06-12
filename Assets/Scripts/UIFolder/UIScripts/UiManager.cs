@@ -64,5 +64,9 @@ public class UiManager : MonoBehaviour
         regen = null;
     }
 
+    public void ButtonPressToActiveMenu(GameObject menuObject)
+    {
+        menuObject.SetActive(!menuObject.activeSelf);
+    }
 
 }
