@@ -165,8 +165,6 @@ public class Character : MonoBehaviour
     }
 
 
-
-
     public void Equip(EquippableItem item)
     {
         if(inventory.RemoveItem(item))

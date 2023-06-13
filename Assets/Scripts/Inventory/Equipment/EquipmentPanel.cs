@@ -32,7 +32,7 @@ public class EquipmentPanel : MonoBehaviour
     }  
 
 
-    private void OnValidate()
+    private void OnValidate()   // this needs to change 
     {
         equipmentSlots = equipmentSlotParent.GetComponentsInChildren<EquipmentSlot>();
     }
